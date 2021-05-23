@@ -8,33 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.timothy.zoo.R
-import com.timothy.zoo.api.ZooSectionService
 import com.timothy.zoo.databinding.FragmentZooSectionListLayoutBinding
 import com.timothy.zoo.utils.isNetworkAvailable
 import com.timothy.zoo.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 
-
+@AndroidEntryPoint
 class ZooSectionListFragment:Fragment() {
+    private val RESULT_CODE_WIFI = 1
 
-    private lateinit var viewModel:MainViewModel
+    private val mViewModel by viewModels<MainViewModel>()
     private lateinit var binding:FragmentZooSectionListLayoutBinding
 
-    val RESULT_CODE_WIFI = 1
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel = activity?.run {
-            ViewModelProvider(this).get(MainViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +32,7 @@ class ZooSectionListFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentZooSectionListLayoutBinding.inflate(inflater,container,false)
-        binding.viewModel = viewModel
+        binding.viewModel = mViewModel
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -53,7 +43,7 @@ class ZooSectionListFragment:Fragment() {
         if(!isNetworkAvailable(requireContext())){
             showNetworkConnectDialog()
         }else {
-            queryZooSectionData()
+            _queryZooSectionData()
         }
     }
 
@@ -73,7 +63,7 @@ class ZooSectionListFragment:Fragment() {
         when(requestCode){
             RESULT_CODE_WIFI-> {
                 if (isNetworkAvailable(requireContext())) {
-                    queryZooSectionData()
+                    _queryZooSectionData()
                 }else{
                     showNetworkConnectDialog()
                 }
@@ -81,26 +71,12 @@ class ZooSectionListFragment:Fragment() {
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
-
-    fun queryZooSectionData(){
-        val baseURL = "https://data.taipei/"
-
-        val service = Retrofit.Builder()
-                .baseUrl(baseURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .build()
-                .create(ZooSectionService::class.java)
-
-        service.searchAllZooSection()
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe {
-                    if (it == null) {
-                        Timber.d("respond = null")
-                    } else {
-                        Timber.d("$it")
-                    }
-                }
+    private fun _queryZooSectionData(){
+        mViewModel.queryZooSectionData()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Timber.d("$it")
+            },{error-> Timber.e(error)})
     }
 }

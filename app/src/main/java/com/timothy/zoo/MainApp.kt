@@ -2,8 +2,10 @@ package com.timothy.zoo
 
 import android.app.Application
 import android.content.Context
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
+@HiltAndroidApp
 class MainApp:Application() {
     companion object{
         lateinit var appContext: Context

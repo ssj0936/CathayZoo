@@ -1,11 +1,13 @@
 package com.timothy.zoo.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class ZooSectionResponse(
 
 	@field:SerializedName("result")
-	val result: ZooSectionResult? = null
+	val result: ZooSectionResult
 )
 
 data class ZooSectionResult(
@@ -23,9 +25,10 @@ data class ZooSectionResult(
 	val sort: String? = null,
 
 	@field:SerializedName("results")
-	val results: List<ZooSectionResultsItem?>? = null
+	val results: List<ZooSectionResultsItem?>
 )
 
+@Entity
 data class ZooSectionResultsItem(
 
 	@field:SerializedName("E_Pic_URL")
@@ -46,6 +49,7 @@ data class ZooSectionResultsItem(
 	@field:SerializedName("E_Name")
 	val eName: String? = null,
 
+	@PrimaryKey
 	@field:SerializedName("_id")
 	val id: Int? = null,
 

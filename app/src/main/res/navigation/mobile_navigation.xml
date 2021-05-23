@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_first_level">
+
+    <fragment
+        android:id="@+id/navigation_first_level"
+        android:name="com.timothy.zoo.view.ZooSectionListFragment"
+        android:label="@string/zoo_section_list_frag_title"
+        tools:layout="@layout/fragment_zoo_section_list_layout" />
+
+</navigation>

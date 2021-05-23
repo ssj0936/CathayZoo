@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Zoo</string>
+
+    <string name="zoo_section_list_frag_title">Zoo Section</string>
+
+    <string name="dialog_network_require_message">Network is required for get Zoo information.</string>
+    <string name="dialog_network_require_pos_btn">go to Wifi settings!</string>
+
+</resources>

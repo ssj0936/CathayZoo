@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.timothy.zoo.data.model.ZooSectionResultsItem
 import com.timothy.zoo.databinding.FragmentZooSectionListLayoutBinding
+import com.timothy.zoo.view.adapter.ZooSectionListAdapter
+import com.timothy.zoo.view.widgit.VerticalRecyclerviewDecoration
 import com.timothy.zoo.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -18,6 +21,7 @@ class ZooSectionListFragment:Fragment() {
 
     private lateinit var mViewModel:MainViewModel
     private lateinit var binding:FragmentZooSectionListLayoutBinding
+    private val adapter = ZooSectionListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +44,19 @@ class ZooSectionListFragment:Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(
+            VerticalRecyclerviewDecoration(requireContext(),
+                LinearLayoutManager.VERTICAL,
+                isDrawLastDivider = false,
+                isDrawFirstDivider = false)
+        )
+
         mViewModel.mZooSectionResultsItem.observe(viewLifecycleOwner,
             Observer<List<ZooSectionResultsItem?>> {
-                Timber.d("it:$it");
+                adapter.swap(it.map { item ->
+                    item?.copy()
+                })
             })
     }
 }

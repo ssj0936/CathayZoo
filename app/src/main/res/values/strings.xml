@@ -6,4 +6,9 @@
     <string name="dialog_network_require_message">Network is required for get Zoo information.</string>
     <string name="dialog_network_require_pos_btn">go to Wifi settings!</string>
 
+    <string name="link_text_view_via_browser">View via browser</string>
+    <string name="title_text_plant_list">Plant List</string>
+
+    <!-- constants -->
+    <string name="arg_name_zoo_section">zoo_section</string>
 </resources>

@@ -1,8 +1,9 @@
 package com.timothy.zoo.data
 
 import com.timothy.zoo.MainApp
-import com.timothy.zoo.api.ZooSectionService
+import com.timothy.zoo.api.ZooService
 import com.timothy.zoo.data.db.ZooSectionDao
+import com.timothy.zoo.data.model.PlantResultsItem
 import com.timothy.zoo.data.model.ZooSectionResultsItem
 import com.timothy.zoo.utils.isNetworkAvailable
 import io.reactivex.Completable
@@ -13,7 +14,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class DataSource @Inject constructor(
-    private val zooSectionService: ZooSectionService,
+    private val zooService: ZooService,
     private val zooSectionDao: ZooSectionDao
 ){
 
@@ -26,7 +27,7 @@ class DataSource @Inject constructor(
                 },
             Observable.defer {
                 if(isNetworkAvailable(MainApp.appContext)){
-                    zooSectionService.searchAllZooSection()
+                    zooService.searchAllZooSection()
                         .subscribeOn(Schedulers.io())
                         .doOnNext{
                             Timber.d("get from API")
@@ -42,5 +43,45 @@ class DataSource @Inject constructor(
                 }
             }
         ).subscribeOn(Schedulers.io())
+    }
+
+    fun queryPlantBySection(sectionName:String):Observable<List<PlantResultsItem?>>{
+        return Observable.concatArrayEager(
+            zooSectionDao.getPlantInSection(sectionName)
+                .toObservable()
+                .doOnNext {
+                    Timber.d("[DB]:${it.map {item -> item.fNameCh }}")
+                }
+                .doOnComplete{
+                    Timber.d("[plant][$sectionName] get from DB")
+                },
+            Observable.defer {
+                if(isNetworkAvailable(MainApp.appContext)){
+                    zooService.searchPlantBySection(sectionName)
+                        .subscribeOn(Schedulers.io())
+                        .doOnNext{
+                            Timber.d("[plant][$sectionName] get from API")
+                        }
+                        .flatMap {
+                            val result = it.plantResult.results
+                                .distinctBy { item -> item?.fNameLatin?.trim() }
+                                .sortedBy { item -> item?.fNameCh }
+
+                            Timber.d("[API]:${result.map {item -> item?.fNameCh}}")
+                            Completable.fromCallable {
+                                zooSectionDao.insertPlant(result)
+                            }.andThen(Observable.just(result))
+                        }
+                }else{
+                    empty<List<PlantResultsItem>>()
+                }
+            }
+        ).subscribeOn(Schedulers.io())
+
+//
+//
+//        return zooService.searchPlantBySection(sectionName).map {
+//            it.plantResult?.results?.distinctBy { item -> item?.fNameLatin }
+//        }
     }
 }

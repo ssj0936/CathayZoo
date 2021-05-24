@@ -3,12 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_first_level">
+    app:startDestination="@+id/zooSectionListFragment">
 
     <fragment
-        android:id="@+id/navigation_first_level"
+        android:id="@+id/zooSectionListFragment"
         android:name="com.timothy.zoo.view.ZooSectionListFragment"
         android:label="@string/zoo_section_list_frag_title"
-        tools:layout="@layout/fragment_zoo_section_list_layout" />
+        tools:layout="@layout/fragment_zoo_section_list_layout" >
+        <action
+            android:id="@+id/action_zoo_section_fragment_to_plant_list_fragment"
+            app:destination="@id/plantListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/plantListFragment"
+        android:name="com.timothy.zoo.view.PlantListFragment"
+        android:label="PlantListFragment"
+        tools:layout="@layout/fragment_plant_list_layout" >
+        <argument
+            android:name="zoo_section"
+            app:argType="com.timothy.zoo.data.model.ZooSectionResultsItem" />
+    </fragment>
 
 </navigation>

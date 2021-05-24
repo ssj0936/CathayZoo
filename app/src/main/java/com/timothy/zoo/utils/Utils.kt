@@ -3,9 +3,10 @@ package com.timothy.zoo.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.widget.ImageView
-import android.widget.TimePicker
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.timothy.zoo.R
@@ -27,9 +28,18 @@ fun isNetworkAvailable(context: Context):Boolean{
 @BindingAdapter("url")
 fun setImage(image: AppCompatImageView, url: String?) {
     if (!url.isNullOrEmpty()){
-        Timber.d("url:$url")
         Glide.with(image.context).load(url).centerCrop()
             .placeholder(R.drawable.no_image_placeholder)
             .into(image)
+    }
+}
+
+@BindingAdapter("html_text")
+fun setHtmlText(view: TextView, text: String?) {
+    if (text != null) {
+        view.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
+        view.movementMethod = LinkMovementMethod.getInstance()
+    } else {
+        view.text = ""
     }
 }

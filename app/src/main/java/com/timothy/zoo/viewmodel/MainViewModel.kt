@@ -3,6 +3,7 @@ package com.timothy.zoo.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.timothy.zoo.data.DataSource
+import com.timothy.zoo.data.model.PlantResultsItem
 import com.timothy.zoo.data.model.ZooSectionResultsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable

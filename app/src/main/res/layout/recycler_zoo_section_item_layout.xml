@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="section"
+            type="com.timothy.zoo.data.model.ZooSectionResultsItem" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/recycler_zoo_section_item_height"
+            android:padding="@dimen/margin_small"
+            android:background="?selectableItemBackground">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/image_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="H,1:1">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:url="@{section.EPicURL}"
+                    android:scaleType="centerCrop"/>
+            </androidx.cardview.widget.CardView>
+            <View
+                android:id="@+id/image_right_side"
+                android:layout_width="@dimen/margin_small"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_container"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:text="@{section.EName}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/zooSectionTitleStyle"
+                android:paddingBottom="@dimen/margin_extra_small"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/image_right_side"
+                app:layout_constraintEnd_toEndOf="@id/barrier2"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/memo"
+                android:text="@{section.ECategory}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/CommonLabelTextStyle"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintStart_toEndOf="@id/image_right_side"
+                app:layout_constraintEnd_toEndOf="@id/barrier2"
+                app:layout_constraintBottom_toTopOf="@id/content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/content"
+                android:text="@{section.EInfo}"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/margin_extra_small"
+                android:textAppearance="@style/CommonPrimaryContextTextStyle"
+                android:gravity="bottom"
+                app:layout_constraintTop_toBottomOf="@id/memo"
+                app:layout_constraintStart_toEndOf="@id/image_right_side"
+                app:layout_constraintEnd_toEndOf="@id/barrier2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:maxLines="3"
+                android:ellipsize="end"/>
+
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/next_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_navigate_next_24"
+                android:alpha=".7"
+                android:paddingStart="@dimen/margin_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="left"
+                app:constraint_referenced_ids="next_icon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

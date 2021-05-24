@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class PlantResponse(
 
@@ -125,7 +126,7 @@ data class PlantResultsItem(
 
 	@field:SerializedName("F_Geo")
 	val fGeo: String? = null
-)
+):Serializable
 
 data class PlantResult(
 

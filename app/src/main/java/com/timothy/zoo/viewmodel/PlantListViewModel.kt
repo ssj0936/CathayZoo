@@ -39,13 +39,13 @@ class PlantListViewModel @Inject constructor(
     init {
         zooSectionName?.let {
             disposable = queryPlantDataBySection(zooSectionName)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        it?.let {
-                            mPlantResultsItem.value = it
-                        }
-                    }, { error -> Timber.e(error) })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    it?.let {
+                        mPlantResultsItem.value = it
+                    }
+                }, { error -> Timber.e(error) })
         }
     }
 

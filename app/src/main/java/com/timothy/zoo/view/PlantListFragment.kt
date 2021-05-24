@@ -1,14 +1,23 @@
 package com.timothy.zoo.view
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
 import com.timothy.zoo.data.model.PlantResultsItem
 import com.timothy.zoo.databinding.FragmentPlantListLayoutBinding
 import com.timothy.zoo.view.adapter.PlantListAdapter
@@ -40,19 +49,42 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
 
         binding.recyclerView.adapter = adapter
 
+        // only show title when collapsing
         binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val totalScrollRange = appBarLayout.totalScrollRange
             binding.collapsingToolbarLayout.isTitleEnabled = totalScrollRange + verticalOffset <= 0
         })
+
         mViewModel.mPlantResultsItem.observe(viewLifecycleOwner,
             Observer<List<PlantResultsItem?>> {
-                adapter.swap(it.map { item ->
-                    item?.copy()
-                })
+                //update recyclerview
+                adapter.swap(it.map { item ->item?.copy()})
+
+                //disabling appbar scrolling, removing plant list title, divider and elevation when no plant data return
+                if(it.isEmpty()){
+                    binding.collapsingToolbarLayout.apply {
+                        this.layoutParams = (this.layoutParams as AppBarLayout.LayoutParams).apply { scrollFlags = 0 }
+                        this.title = ""
+                    }
+                    binding.appbar.elevation = 0f
+                    binding.layerNonEmptyElement.visibility = View.GONE
+                    binding.recyclerView.visibility = View.GONE
+                }
+                //enable appbar scrolling
+                else{
+                    binding.collapsingToolbarLayout.apply {
+                        this.layoutParams = (this.layoutParams as AppBarLayout.LayoutParams).apply {
+                            scrollFlags = SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or SCROLL_FLAG_SCROLL
+                        }
+                    }
+                }
             })
     }
 
     override fun itemClick(plantResultsItem: PlantResultsItem) {
-        Timber.d("click")
+        plantResultsItem.let {
+            val direction = PlantListFragmentDirections.actionPlantListFragmentToPlantDetailFragment(it)
+            findNavController().navigate(direction)
+        }
     }
 }

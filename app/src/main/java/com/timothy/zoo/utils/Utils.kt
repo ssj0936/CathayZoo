@@ -9,8 +9,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.timothy.zoo.R
-import timber.log.Timber
 
 
 fun isNetworkAvailable(context: Context):Boolean{

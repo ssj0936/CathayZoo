@@ -9,6 +9,10 @@
     <string name="link_text_view_via_browser">View via browser</string>
     <string name="title_text_plant_list">Plant List</string>
 
+    <string name="title_text_plant_detail_brief">Introduction</string>
+    <string name="title_text_plant_detail_feature">Feature</string>
+    <string name="title_text_plant_detail_known_as">Known as</string>
+    <string name="title_text_plant_detail_family_genus">Family and Genus</string>
     <!-- constants -->
     <string name="arg_name_zoo_section">zoo_section</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.timothy.zoo.view
 
 import android.animation.ObjectAnimator
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -31,18 +32,8 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
     private val mViewModel:PlantListViewModel by viewModels()
     private lateinit var binding:FragmentPlantListLayoutBinding
     private var adapter = PlantListAdapter(this)
-    private val actionBarSize:Int
+    private var actionBarSize:Int = appContext.resources.getDimensionPixelSize(R.dimen.appBarHeight)
     private val headerFakeHeight:Int = appContext.resources.getDimensionPixelSize(R.dimen.headerFakeViewHeight)
-
-    init {
-        val typedValue = TypedValue()
-        appContext.theme.resolveAttribute(android.R.attr.actionBarSize, typedValue, true)
-        val attribute = intArrayOf(android.R.attr.actionBarSize)
-        val array = appContext.obtainStyledAttributes(typedValue.resourceId, attribute)
-        actionBarSize = array.getDimensionPixelSize(0, -1) + headerFakeHeight
-        array.recycle()
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -107,7 +98,7 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
                     val anim = ObjectAnimator.ofFloat(
                             binding.topStickyTitleContainer,
                             "translationY",
-                            actionBarSize.toFloat()*-1,
+                            actionBarSize.toFloat()*-1 + headerFakeHeight.toFloat()*-1,
                             headerFakeHeight.toFloat()*-1
                     ).apply {
                         duration = 200
@@ -119,7 +110,7 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
                             binding.topStickyTitleContainer,
                             "translationY",
                             headerFakeHeight.toFloat()*-1,
-                            actionBarSize.toFloat()*-1
+                            actionBarSize.toFloat()*-1 + headerFakeHeight.toFloat()*-1
                     ).apply {
                         duration = 200
                     }.start()

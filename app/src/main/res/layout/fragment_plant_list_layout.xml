@@ -120,7 +120,7 @@
                 <TextView
                     android:id="@+id/plant_list_title"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="@dimen/appBarHeight"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="@string/title_text_plant_list"
                     android:textAppearance="@style/toolbarCollapsedTitleTextAppearance"
@@ -151,7 +151,7 @@
                 <!-- wrapped by a container for imageview ripple effect-->
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="@dimen/appBarHeight"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@android:color/transparent">
                     <ImageView
@@ -185,7 +185,7 @@
             <TextView
                 android:id="@+id/top_sticky_title"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="@dimen/appBarHeight"
                 android:text="@string/title_text_plant_list"
                 android:gravity="center"
                 android:textAppearance="@style/toolbarCollapsedTitleTextAppearance"

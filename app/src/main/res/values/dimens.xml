@@ -22,6 +22,7 @@
     <dimen name="header_image_gradient_fade_height">120dp</dimen>
     <dimen name="card_image_corner_radius">10dp</dimen>
 
+    <dimen name="appBarHeight">50dp</dimen>
     <dimen name="headerFakeViewHeight">20dp</dimen>
     <dimen name="headerFakeViewHeightNeg">-20dp</dimen>
 

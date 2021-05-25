@@ -1,18 +1,22 @@
 package com.timothy.zoo.view
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.*
-import androidx.appcompat.widget.AppCompatImageView
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.AnticipateOvershootInterpolator
+import android.view.animation.TranslateAnimation
+import android.widget.TextView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
-import com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+import com.timothy.zoo.MainApp.Companion.appContext
 import com.timothy.zoo.R
 import com.timothy.zoo.data.model.PlantResultsItem
 import com.timothy.zoo.databinding.FragmentPlantListLayoutBinding
@@ -21,12 +25,24 @@ import com.timothy.zoo.viewmodel.PlantListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+
 @AndroidEntryPoint
 class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
     private val mViewModel:PlantListViewModel by viewModels()
     private lateinit var binding:FragmentPlantListLayoutBinding
     private var adapter = PlantListAdapter(this)
+    private val actionBarSize:Int
+    private val headerFakeHeight:Int = appContext.resources.getDimensionPixelSize(R.dimen.headerFakeViewHeight)
 
+    init {
+        val typedValue = TypedValue()
+        appContext.theme.resolveAttribute(android.R.attr.actionBarSize, typedValue, true)
+        val attribute = intArrayOf(android.R.attr.actionBarSize)
+        val array = appContext.obtainStyledAttributes(typedValue.resourceId, attribute)
+        actionBarSize = array.getDimensionPixelSize(0, -1) + headerFakeHeight
+        array.recycle()
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,14 +60,6 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
 
         binding.recyclerView.adapter = adapter
 
-        // only show title when collapsing
-        binding.appbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val totalScrollRange = appBarLayout.totalScrollRange
-
-            //at layout initialed totalScrollRange==0, it cause a title flash
-            binding.collapsingToolbarLayout.isTitleEnabled = totalScrollRange!=0 && totalScrollRange + verticalOffset <= 0
-        })
-
         mViewModel.mPlantResultsItem.observe(viewLifecycleOwner,
             Observer<List<PlantResultsItem?>> {
                 if(!areSameList(it,adapter.getList())) {
@@ -60,35 +68,69 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
 
                     binding.recyclerView.scheduleLayoutAnimation()
                 }
+            })
 
-                //disabling appbar scrolling, removing plant list title, divider and elevation when no plant data return
-                if (it.isEmpty()) {
-                    binding.collapsingToolbarLayout.apply {
-                        this.layoutParams = (this.layoutParams as AppBarLayout.LayoutParams).apply { scrollFlags = 0 }
-                        this.title = ""
-                    }
-                    binding.appbar.elevation = 0f
-                    binding.layerNonEmptyElement.visibility = View.GONE
-                    binding.recyclerView.visibility = View.GONE
-                }
-                //enable appbar scrolling
-                else {
-                    binding.collapsingToolbarLayout.apply {
-                        this.layoutParams = (this.layoutParams as AppBarLayout.LayoutParams).apply {
-                            scrollFlags = SCROLL_FLAG_EXIT_UNTIL_COLLAPSED or SCROLL_FLAG_SCROLL
-                        }
-                    }
-                }
-        })
+        headerSetup()
 
-        binding.toolbar.setNavigationOnClickListener {
+        //listener of btn
+        binding.navButtonMain.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
 
+    private fun headerSetup(){
+        //animation on first launch
         binding.header.startAnimation(
                 AnimationUtils.loadAnimation(requireContext(), R.anim.zoo_section_header_anim)
         )
 
+        //listener of knowing when header should show
+        binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _: Int, scrollY: Int, _: Int, oldScrollY: Int ->
+            val title = v.findViewById<TextView>(R.id.plant_list_title)
+
+            //scroll down(finger down)
+            if(oldScrollY>scrollY && (v.scrollY.toFloat() < title.y)){
+                if(mViewModel.isTopTitleShow.value != false)
+                    mViewModel.isTopTitleShow.value = false
+            }
+            // scroll up(finger up)
+            else if(oldScrollY<scrollY && (v.scrollY.toFloat() >= title.y)){
+                if(mViewModel.isTopTitleShow.value != true)
+                    mViewModel.isTopTitleShow.value = true
+            }
+        }
+
+        //observing header status and playing animation
+        mViewModel.isTopTitleShow.observe(viewLifecycleOwner,Observer<Boolean>{
+            when(it){
+                true ->{
+                    val anim = ObjectAnimator.ofFloat(
+                            binding.topStickyTitleContainer,
+                            "translationY",
+                            actionBarSize.toFloat()*-1,
+                            headerFakeHeight.toFloat()*-1
+                    ).apply {
+                        duration = 200
+                        interpolator = AnticipateOvershootInterpolator()
+                    }.start()
+                }
+                false->{
+                    val anim = ObjectAnimator.ofFloat(
+                            binding.topStickyTitleContainer,
+                            "translationY",
+                            headerFakeHeight.toFloat()*-1,
+                            actionBarSize.toFloat()*-1
+                    ).apply {
+                        duration = 200
+                    }.start()
+                }
+            }
+        })
+
+        //listener of btn
+        binding.navButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun areSameList(list1:List<PlantResultsItem?>, list2: List<PlantResultsItem?>):Boolean{

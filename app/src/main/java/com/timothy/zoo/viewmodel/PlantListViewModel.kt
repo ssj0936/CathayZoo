@@ -34,6 +34,10 @@ class PlantListViewModel @Inject constructor(
 
     val mPlantResultsItem = MutableLiveData<List<PlantResultsItem?>>()
 
+    val isTopTitleShow = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
     private fun queryPlantDataBySection(sectionName:String): Observable<List<PlantResultsItem?>> {
         return dataSource.queryPlantBySection(sectionName)
     }

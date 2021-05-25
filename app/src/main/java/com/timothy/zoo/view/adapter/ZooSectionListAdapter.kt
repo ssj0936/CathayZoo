@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.timothy.zoo.data.model.ZooSectionResultsItem
 import com.timothy.zoo.databinding.RecyclerZooSectionItemLayoutBinding
 import com.timothy.zoo.utils.ZooSectionListDiffCallback
+import timber.log.Timber
 
 class ZooSectionListAdapter(
     private val listener:OnClickListener
@@ -47,6 +48,8 @@ class ZooSectionListAdapter(
         this.list = newZooSectionList
         diffResult.dispatchUpdatesTo(this)
     }
+
+    fun getList():List<ZooSectionResultsItem?> = list
 
     interface OnClickListener{
         fun itemClick(zooSectionResultsItem:ZooSectionResultsItem)

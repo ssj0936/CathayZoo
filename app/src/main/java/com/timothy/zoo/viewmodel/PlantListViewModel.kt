@@ -22,13 +22,15 @@ class PlantListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ):ViewModel() {
     lateinit var disposable:Disposable
-    private val zooSection = savedStateHandle.get<ZooSectionResultsItem>("zoo_section")!!
-    val zooSectionName = zooSection.eName
-    val zooSectionDesc = zooSection.eInfo
-    val zooSectionPicUrl = zooSection.ePicURL
-    val zooSectionCategory = zooSection.eCategory
-    val zooSectionMemo = zooSection.eMemo
-    val zooSectionLink = "<a href=\"${zooSection.eURL}\">${appContext.getString(R.string.link_text_view_via_browser)}</a>"
+    private val zooSection:MutableLiveData<ZooSectionResultsItem> = MutableLiveData(
+            savedStateHandle.get<ZooSectionResultsItem>("zoo_section")!!
+    )
+    val zooSectionName = zooSection.value?.eName
+    val zooSectionDesc = zooSection.value?.eInfo
+    val zooSectionPicUrl = zooSection.value?.ePicURL
+    val zooSectionCategory = zooSection.value?.eCategory
+    val zooSectionMemo = zooSection.value?.eMemo
+    val zooSectionLink = "<a href=\"${zooSection.value?.eURL}\">${appContext.getString(R.string.link_text_view_via_browser)}</a>"
 
     val mPlantResultsItem = MutableLiveData<List<PlantResultsItem?>>()
 

@@ -24,13 +24,15 @@
                 android:id="@+id/collapsing_toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:titleEnabled="true"
                 app:collapsedTitleGravity="center"
                 app:expandedTitleGravity="center"
                 app:title="@{view_model.zooSectionName+` - `+@string/title_text_plant_list}"
                 android:background="@color/background_color"
                 app:contentScrim="@color/background_color"
                 app:statusBarScrim="@color/background_color"
-                app:collapsedTitleTextAppearance="@style/toolbarCollapsedTitleTextAppearance"
+                app:collapsedTitleTextAppearance="?textAppearanceHeadline5"
+                app:expandedTitleTextAppearance="@style/toolbarExpendedTitleTextAppearance"
                 app:scrimAnimationDuration="50">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -158,6 +160,7 @@
             android:orientation="vertical"
             tools:listitem="@layout/recycler_plant_list_item_layout"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layoutAnimation="@anim/recycler_view_layout_animation"
             android:background="@color/background_color"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

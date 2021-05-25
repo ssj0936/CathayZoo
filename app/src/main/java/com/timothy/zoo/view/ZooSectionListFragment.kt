@@ -8,17 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.timothy.zoo.R
 import com.timothy.zoo.data.model.ZooSectionResultsItem
 import com.timothy.zoo.databinding.FragmentZooSectionListLayoutBinding
 import com.timothy.zoo.view.adapter.ZooSectionListAdapter
-import com.timothy.zoo.view.widgit.VerticalRecyclerviewDecoration
 import com.timothy.zoo.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -51,17 +45,34 @@ class ZooSectionListFragment:Fragment(),ZooSectionListAdapter.OnClickListener {
         binding.recyclerView.adapter = adapter
         mViewModel.mZooSectionResultsItem.observe(viewLifecycleOwner,
             Observer<List<ZooSectionResultsItem?>> {
-                adapter.swap(it.map { item ->
-                    item?.copy()
-                })
+                if(!areSameList(it, adapter.getList())) {
+                    adapter.swap(it.map { item ->
+                        item?.copy()
+                    })
+                    binding.recyclerView.scheduleLayoutAnimation()
+                }
             })
     }
 
     override fun itemClick(zooSectionResultsItem: ZooSectionResultsItem) {
-        zooSectionResultsItem.let {
-            val direction = ZooSectionListFragmentDirections
-                    .actionZooSectionFragmentToPlantListFragment(it)
-            findNavController().navigate(direction)
+        try {
+            zooSectionResultsItem.let {
+                val direction = ZooSectionListFragmentDirections
+                        .actionZooSectionFragmentToPlantListFragment(it)
+                findNavController().navigate(direction)
+            }
+        }catch (e:IllegalArgumentException){
+            Timber.d("two tap preventing")
         }
+
+    }
+
+    private fun areSameList(list1:List<ZooSectionResultsItem?>, list2: List<ZooSectionResultsItem?>):Boolean{
+        if(list1.size != list2.size) return false
+
+        for(i in list1.indices){
+            if(list1[i]?.id != list2[i]?.id) return false
+        }
+        return true
     }
 }

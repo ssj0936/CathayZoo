@@ -62,9 +62,6 @@ class SplashScreenFragment:Fragment(){
         val logo = view.findViewById<AppCompatImageView>(R.id.zoo_logo)
 
         logo.startAnimation(animationSet)
-        logo.setOnClickListener {
-            it.startAnimation(animationSet)
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

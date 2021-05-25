@@ -50,6 +50,8 @@ class PlantListAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun getList():List<PlantResultsItem?> = list
+
     interface OnClickListener{
         fun itemClick(plantResultsItem:PlantResultsItem)
     }

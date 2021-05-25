@@ -43,7 +43,7 @@ android {
 
 dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    def room_version = "2.2.6"
+    def room_version = "2.3.0"
     def retrofit_version = "2.7.1"
     def timber_version = "4.7.1"
 
@@ -55,7 +55,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation "com.google.dagger:hilt-android:2.33-beta"
-    kapt "com.google.dagger:hilt-android-compiler:2.31.2-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.33-beta"
 
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
     kapt 'androidx.hilt:hilt-compiler:1.0.0-beta01'

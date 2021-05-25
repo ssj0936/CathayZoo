@@ -12,7 +12,8 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_color">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -23,12 +24,12 @@
                 android:id="@+id/collapsing_toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:collapsedTitleGravity="center_horizontal"
-                app:expandedTitleGravity="center_horizontal"
+                app:collapsedTitleGravity="center"
+                app:expandedTitleGravity="center"
                 app:title="@{view_model.zooSectionName+` - `+@string/title_text_plant_list}"
-                android:background="@color/white"
-                app:contentScrim="@color/white"
-                app:statusBarScrim="@color/white"
+                android:background="@color/background_color"
+                app:contentScrim="@color/background_color"
+                app:statusBarScrim="@color/background_color"
                 app:collapsedTitleTextAppearance="@style/toolbarCollapsedTitleTextAppearance"
                 app:scrimAnimationDuration="50">
 
@@ -138,10 +139,15 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    app:contentInsetStartWithNavigation="0dp"
+                    app:contentInsetEnd="@dimen/icon_size_navigation"
                     app:layout_collapseMode="pin"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:navigationIcon="@drawable/ic_detail_back"/>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
@@ -151,7 +157,8 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             tools:listitem="@layout/recycler_plant_list_item_layout"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:background="@color/background_color"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

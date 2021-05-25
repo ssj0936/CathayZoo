@@ -13,6 +13,9 @@
     <color name="theme_color_05">#766153</color>
     <color name="theme_color_06">#ea9010</color>
 
+    <color name="background_color">#FAFAFA</color>
+    <color name="background_color_list_item">@color/theme_color_05</color>
+
     <color name="common_primary_context_text_color">#212121</color>
     <color name="common_secondary_context_text_color">#797979</color>
     <color name="common_content_text_color">#212121</color>

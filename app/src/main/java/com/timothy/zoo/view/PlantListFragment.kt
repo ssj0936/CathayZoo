@@ -78,7 +78,11 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
                         }
                     }
                 }
-            })
+        })
+
+        binding.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun itemClick(plantResultsItem: PlantResultsItem) {

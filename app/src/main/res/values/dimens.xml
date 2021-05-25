@@ -12,6 +12,8 @@
     <dimen name="common_context_padding">24dp</dimen>
     <dimen name="common_label_text_size">12sp</dimen>
 
+    <dimen name="icon_size_navigation">32dp</dimen>
+
     <dimen name="margin_normal">16dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_extra_small">4dp</dimen>

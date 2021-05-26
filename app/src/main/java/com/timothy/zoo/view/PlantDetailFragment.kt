@@ -1,5 +1,6 @@
 package com.timothy.zoo.view
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,12 @@ import com.timothy.zoo.viewmodel.PlantDetailViewModel
 class PlantDetailFragment:DialogFragment() {
     private val mViewModel:PlantDetailViewModel by viewModels()
     lateinit var binding:FragmentPlantDetailLayoutBinding
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            window?.attributes?.windowAnimations = R.style.DetailDialogAnimation
+        }
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,

@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/header_image_gradient_fade_height"
                     android:layout_gravity="bottom"
-                    android:background="@android:color/transparent"
+                    android:background="@drawable/gradient_fade"
                     app:layout_constraintBottom_toBottomOf="@id/header" />
 
                 <TextView

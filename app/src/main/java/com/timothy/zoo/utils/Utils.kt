@@ -9,6 +9,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.timothy.zoo.R
@@ -29,8 +30,10 @@ fun isNetworkAvailable(context: Context):Boolean{
 @BindingAdapter("url")
 fun setImage(image: AppCompatImageView, url: String?) {
     if (!url.isNullOrEmpty()){
-        Glide.with(image.context).load(url).centerCrop()
-            .placeholder(R.drawable.no_image_placeholder)
+        Glide.with(image.context).load(url)
+            .transition(DrawableTransitionOptions.withCrossFade(200))
+            .placeholder(R.color.background_color)
+            .error(R.drawable.glide_error_image)
             .into(image)
     }
 }

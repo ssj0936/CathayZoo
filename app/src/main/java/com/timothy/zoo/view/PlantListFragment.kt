@@ -52,7 +52,7 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
         binding.recyclerView.adapter = adapter
 
         mViewModel.mPlantResultsItem.observe(viewLifecycleOwner,
-            Observer<List<PlantResultsItem?>> {
+            {
                 if(!areSameList(it,adapter.getList())) {
                     //update recyclerview
                     adapter.swap(it.map { item -> item?.copy() })
@@ -137,9 +137,14 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
     }
 
     override fun itemClick(plantResultsItem: PlantResultsItem) {
-        plantResultsItem.let {
-            val direction = PlantListFragmentDirections.actionPlantListFragmentToPlantDetailFragment(it)
-            findNavController().navigate(direction)
+        try {
+            plantResultsItem.let {
+                val direction =
+                    PlantListFragmentDirections.actionPlantListFragmentToPlantDetailFragment(it)
+                findNavController().navigate(direction)
+            }
+        }catch (e:IllegalArgumentException){
+            Timber.d("two tap preventing")
         }
     }
 }

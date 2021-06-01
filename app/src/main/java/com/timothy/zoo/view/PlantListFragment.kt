@@ -95,7 +95,7 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
         mViewModel.isTopTitleShow.observe(viewLifecycleOwner,Observer<Boolean>{
             when(it){
                 true ->{
-                    val anim = ObjectAnimator.ofFloat(
+                    ObjectAnimator.ofFloat(
                             binding.topStickyTitleContainer,
                             "translationY",
                             actionBarSize.toFloat()*-1 + headerFakeHeight.toFloat()*-1,
@@ -106,7 +106,7 @@ class PlantListFragment:Fragment(), PlantListAdapter.OnClickListener {
                     }.start()
                 }
                 false->{
-                    val anim = ObjectAnimator.ofFloat(
+                    ObjectAnimator.ofFloat(
                             binding.topStickyTitleContainer,
                             "translationY",
                             headerFakeHeight.toFloat()*-1,

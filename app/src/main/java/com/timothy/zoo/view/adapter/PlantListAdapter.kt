@@ -5,10 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.timothy.zoo.data.model.PlantResultsItem
-import com.timothy.zoo.data.model.ZooSectionResultsItem
 import com.timothy.zoo.databinding.RecyclerPlantListItemLayoutBinding
-import com.timothy.zoo.databinding.RecyclerZooSectionItemLayoutBinding
-import com.timothy.zoo.utils.ZooSectionListDiffCallback
 
 class PlantListAdapter(
     private val listener:OnClickListener

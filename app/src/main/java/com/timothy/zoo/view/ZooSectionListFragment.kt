@@ -11,20 +11,20 @@ import androidx.navigation.fragment.findNavController
 import com.timothy.zoo.data.model.ZooSectionResultsItem
 import com.timothy.zoo.databinding.FragmentZooSectionListLayoutBinding
 import com.timothy.zoo.view.adapter.ZooSectionListAdapter
-import com.timothy.zoo.viewmodel.MainViewModel
+import com.timothy.zoo.viewmodel.ZooSectionListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
 class ZooSectionListFragment:Fragment(),ZooSectionListAdapter.OnClickListener {
-    private lateinit var mViewModel:MainViewModel
+    private lateinit var mViewModel:ZooSectionListViewModel
     private lateinit var binding:FragmentZooSectionListLayoutBinding
     private val adapter = ZooSectionListAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = activity?.run {
-            ViewModelProvider(this).get(MainViewModel::class.java)
+            ViewModelProvider(this).get(ZooSectionListViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
     }
 

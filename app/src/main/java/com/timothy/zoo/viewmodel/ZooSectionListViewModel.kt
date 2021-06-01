@@ -3,7 +3,6 @@ package com.timothy.zoo.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.timothy.zoo.data.DataSource
-import com.timothy.zoo.data.model.PlantResultsItem
 import com.timothy.zoo.data.model.ZooSectionResultsItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Observable
@@ -14,7 +13,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class ZooSectionListViewModel @Inject constructor(
     private val dataSource: DataSource
 ):ViewModel() {
     var disposable:Disposable

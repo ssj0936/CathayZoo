@@ -28,7 +28,6 @@ object RepositoryModule{
             .baseUrl(baseURL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-//            .client(httpClient)
             .build()
             .create(ZooService::class.java)
     }

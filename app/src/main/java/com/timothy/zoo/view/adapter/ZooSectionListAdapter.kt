@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.timothy.zoo.data.model.ZooSectionResultsItem
 import com.timothy.zoo.databinding.RecyclerZooSectionItemLayoutBinding
-import com.timothy.zoo.utils.ZooSectionListDiffCallback
-import timber.log.Timber
 
 class ZooSectionListAdapter(
     private val listener:OnClickListener
@@ -54,4 +52,18 @@ class ZooSectionListAdapter(
     interface OnClickListener{
         fun itemClick(zooSectionResultsItem:ZooSectionResultsItem)
     }
+}
+
+class ZooSectionListDiffCallback(
+    private val newData:List<ZooSectionResultsItem?>,
+    private val oldData:List<ZooSectionResultsItem?>
+): DiffUtil.Callback() {
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = true
+
+    override fun getOldListSize(): Int = oldData.size
+
+    override fun getNewListSize(): Int = newData.size
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean
+            = oldData[oldItemPosition]?.id == newData[newItemPosition]?.id
 }

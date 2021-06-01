@@ -1,24 +1,10 @@
 package com.timothy.zoo.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.timothy.zoo.MainApp.Companion.appContext
-import com.timothy.zoo.R
-import com.timothy.zoo.data.DataSource
 import com.timothy.zoo.data.model.PlantResultsItem
-import com.timothy.zoo.data.model.ZooSectionResultsItem
-import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
-import javax.inject.Inject
-
 
 class PlantDetailViewModel constructor(
-//    private val dataSource: DataSource,
     savedStateHandle: SavedStateHandle
 ):ViewModel() {
     private val plantInfo = savedStateHandle.get<PlantResultsItem>("plant_info")!!

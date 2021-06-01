@@ -22,7 +22,9 @@ class DataSource @Inject constructor(
         return Observable.concatArrayEager(
             zooSectionDao.getAllZooSections()
                 .toObservable()
-                .doOnComplete {
+                .filter {
+                     it.isNotEmpty()
+                }.doOnComplete {
                     Timber.d("get from DB")
                 },
             Observable.defer {
@@ -49,6 +51,9 @@ class DataSource @Inject constructor(
         return Observable.concatArrayEager(
             zooSectionDao.getPlantInSection(sectionName)
                 .toObservable()
+                .filter {
+                    it.isNotEmpty()
+                }
                 .doOnNext {
                     Timber.d("[DB]:${it.map {item -> item.fNameCh }}")
                 }
@@ -63,11 +68,14 @@ class DataSource @Inject constructor(
                             Timber.d("[plant][$sectionName] get from API")
                         }
                         .flatMap {
+                            //sort and remove duplicate item
                             val result = it.plantResult.results
                                 .distinctBy { item -> item?.fNameLatin?.trim() }
                                 .sortedBy { item -> item?.fNameCh }
 
                             Timber.d("[API]:${result.map {item -> item?.fNameCh}}")
+
+                            //save into DB then emit the result
                             Completable.fromCallable {
                                 zooSectionDao.insertPlant(result)
                             }.andThen(Observable.just(result))
@@ -77,11 +85,5 @@ class DataSource @Inject constructor(
                 }
             }
         ).subscribeOn(Schedulers.io())
-
-//
-//
-//        return zooService.searchPlantBySection(sectionName).map {
-//            it.plantResult?.results?.distinctBy { item -> item?.fNameLatin }
-//        }
     }
 }

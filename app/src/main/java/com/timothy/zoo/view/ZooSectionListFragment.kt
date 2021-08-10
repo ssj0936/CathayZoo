@@ -32,7 +32,7 @@ class ZooSectionListFragment:Fragment(),ZooSectionListAdapter.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentZooSectionListLayoutBinding.inflate(inflater,container,false)
         binding.viewModel = mViewModel
         binding.lifecycleOwner = this
@@ -44,7 +44,8 @@ class ZooSectionListFragment:Fragment(),ZooSectionListAdapter.OnClickListener {
 
         binding.recyclerView.adapter = adapter
         mViewModel.mZooSectionResultsItem.observe(viewLifecycleOwner,
-            Observer<List<ZooSectionResultsItem?>> {
+            {
+                Timber.d("111.${Thread.currentThread().name} - ${Thread.currentThread().id}")
                 if(!areSameList(it, adapter.getList())) {
                     adapter.swap(it.map { item ->
                         item?.copy()
